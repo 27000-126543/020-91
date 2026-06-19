@@ -4,11 +4,23 @@ import { useStickerStore } from '@/store';
 import { PrintLayout } from '@/components/PrintLayout';
 import { useDateCalculator } from '@/hooks/useDateCalculator';
 
+const emptyFormData: StickerFormData = {
+  materialName: '',
+  batchNumber: '',
+  openDate: '',
+  expiryDate: '',
+  daysAfterOpen: 0,
+  cabinetNumber: '',
+  warnDaysBefore: 7,
+  style: 'minimal',
+};
+
 export function GeneratorPage() {
   const addRecord = useStickerStore((s) => s.addRecord);
   const [showPrint, setShowPrint] = useState(false);
-  const [lastFormData, setLastFormData] = useState<StickerFormData | null>(null);
-  const computed = lastFormData ? useDateCalculator(lastFormData) : null;
+  const [lastFormData, setLastFormData] = useState<StickerFormData>(emptyFormData);
+
+  const computed = useDateCalculator(lastFormData);
 
   const handleSave = (formData: StickerFormData) => {
     addRecord(formData);
@@ -18,6 +30,8 @@ export function GeneratorPage() {
     setLastFormData(formData);
     setShowPrint(true);
   };
+
+  const canPrint = computed !== null && lastFormData.materialName.trim() !== '';
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
@@ -32,7 +46,7 @@ export function GeneratorPage() {
 
       <StickerForm onSave={handleSave} onPrint={handlePrint} />
 
-      {showPrint && lastFormData && computed && (
+      {showPrint && canPrint && (
         <PrintLayout
           formData={lastFormData}
           computed={computed}

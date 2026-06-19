@@ -62,9 +62,14 @@ export function NurseSticker({ formData, computed, size = 'preview' }: StickerPr
       <div className={`border-t border-gray-200 ${isPrint ? 'px-2 py-1' : 'px-3 py-2'} bg-gray-50`}>
         <div className={`flex justify-between items-end ${isPrint ? 'text-[9px]' : 'text-[10px]'} text-gray-500`}>
           <div>
-            <span>开封日 {formData.openDate || '-'}</span>
-            <span className="mx-1">·</span>
-            <span>{formData.daysAfterOpen || 0}天内用完</span>
+            <div>
+              <span>开封日 {formData.openDate || '-'}</span>
+              <span className="mx-1">·</span>
+              <span>{formData.daysAfterOpen || 0}天内用完</span>
+            </div>
+            <div className="text-orange-600 font-semibold mt-0.5">
+              ⚠️ 临期前{formData.warnDaysBefore}天请检查 · 过期禁用
+            </div>
           </div>
           <div className="flex items-center gap-1">
             <span className="whitespace-nowrap">护士签字:</span>

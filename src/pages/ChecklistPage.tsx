@@ -18,10 +18,15 @@ const filterTabs: { value: FilterType; label: string; icon: typeof AlertTriangle
 ];
 
 export function ChecklistPage() {
-  const records = useStickerStore((s) => s.getSortedRecords());
+  const rawRecords = useStickerStore((s) => s.records);
   const deleteRecord = useStickerStore((s) => s.deleteRecord);
   const deleteExpiredRecords = useStickerStore((s) => s.deleteExpiredRecords);
   const updateRecord = useStickerStore((s) => s.updateRecord);
+
+  const records = useMemo(
+    () => [...rawRecords].sort((a, b) => a.latestUseDate.localeCompare(b.latestUseDate)),
+    [rawRecords]
+  );
 
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [editingRecord, setEditingRecord] = useState<StickerRecord | null>(null);

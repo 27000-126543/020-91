@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { StickerRecord, StickerFormData, StickerComputed } from '@/types';
 import { StickerRenderer } from './StickerRenderer';
 import { useDateCalculator } from '@/hooks/useDateCalculator';
-import { X, Minus, Plus } from 'lucide-react';
+import { X, Minus, Plus, Printer } from 'lucide-react';
 
 interface PrintLayoutProps {
   formData: StickerFormData;
@@ -13,12 +13,9 @@ interface PrintLayoutProps {
 export function PrintLayout({ formData, computed, onClose }: PrintLayoutProps) {
   const [count, setCount] = useState(12);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.print();
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
+  const handlePrint = () => {
+    window.print();
+  };
 
   const stickers = Array.from({ length: count }, (_, i) => i);
 
@@ -47,9 +44,10 @@ export function PrintLayout({ formData, computed, onClose }: PrintLayoutProps) {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => window.print()}
-              className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition"
+              onClick={handlePrint}
+              className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition flex items-center gap-1.5"
             >
+              <Printer size={16} />
               确认打印
             </button>
             <button
